@@ -103,7 +103,7 @@ export default function Homepage() {
 							className="underline"
 							href="https://github.com/ocbwoy3/SkidSNS"
 						>
-							SkidSNS
+							OCbwoy3 Bluesky Client
 						</Link>
 						{` (${process.env.NODE_ENV}) by `}
 						<Link
