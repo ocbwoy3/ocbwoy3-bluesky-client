@@ -101,7 +101,7 @@ export default function Homepage() {
 					<span className="absolute bottom-2 left-3 font-mono z-[60]">
 						<Link
 							className="underline"
-							href="https://github.com/ocbwoy3/SkidSNS"
+							href="https://github.com/ocbwoy3/ocbwoy3-bluesky-client"
 						>
 							OCbwoy3 Bluesky Client
 						</Link>
