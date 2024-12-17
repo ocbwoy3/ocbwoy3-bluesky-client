@@ -8,6 +8,6 @@ export function setAgent(a: BskyAgent) {
 	((globalThis || global) as any).bskyAgent = a;
 }
 
-export function getAgent() {
+export function getAgent(): BskyAgent {
 	return ((globalThis || global) as any).bskyAgent;
 }

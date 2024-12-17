@@ -1,7 +1,6 @@
 "use client";
 
 import { App } from "@/components/App";
-import { CommandMenu } from "@/components/app/Command";
 import LoginForm from "@/components/Login";
 import { setAgent } from "@/lib/atproto/client";
 import { BskyAgent, CredentialSession } from "@atproto/api";
@@ -50,15 +49,18 @@ export default function Homepage() {
 				const ag = new BskyAgent(cs);
 
 				try {
-					await ag.resumeSession(
+					const d = await ag.resumeSession(
 						JSON.parse(localStorage.getItem("atproto-session")!)
 					);
-					toast("Success", {
-						description: `Logged in with existing ATProto session.`,
-					});
-					setShowLogin(false);
-					setShowApp(true);
-					return;
+					if (d.data.active) {
+						toast("Maybe Success", {
+							description: `Called agent.resumeSession`,
+						});
+						setAgent(ag);
+						setShowLogin(false);
+						setShowApp(true);
+						return;
+					}
 				} catch {}
 
 				ag.login({
@@ -105,13 +107,10 @@ export default function Homepage() {
 						>
 							OCbwoy3 Bluesky Client
 						</Link>
-						{` (${process.env.NODE_ENV}) by `}
-						<Link
-							className="underline"
-							href="https://bsky.app/profile/did:plc:s7cesz7cr6ybltaryy4meb6y"
-						>
-							OCbwoy3
-						</Link>
+						{` (${process.env.NODE_ENV}) `}
+						<span className="text-muted-foreground">{`@atproto/api ${process
+							.env.atproto_api_version!} next ${process.env
+							.next_version!}`}</span>
 					</span>
 				</>
 			) : (
@@ -119,7 +118,7 @@ export default function Homepage() {
 			)}
 			{showApp ? (
 				<>
-					<CommandMenu />
+					{/* <CommandMenu /> */}
 					<div className="absolute top-0 left-0 w-screen h-screen overflow-hidden">
 						<App />
 					</div>

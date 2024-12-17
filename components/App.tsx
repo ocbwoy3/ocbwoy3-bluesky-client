@@ -1,19 +1,33 @@
 "use client";
 
 import { Title } from "./Title";
-import { Button } from "./ui/button";
+import Link from "next/link";
+import { ProfileButton } from "./app/ProfileButton";
+import { WindowManager } from "./app/WM";
+import { useState } from "react";
 
 export function App() {
+
 	return (
 		<>
-			<Title/>
-			<Button onClick={()=>{
-				localStorage.removeItem("login-details");
-				localStorage.removeItem("atproto-session");
-				location.reload();
-			}}>
-				Log Out
-			</Button>
+			<WindowManager/>
+			<Title />
+			<div className="absolute top-2 left-2 z-[70]">
+				<ProfileButton />
+			</div>
+			<span className="absolute bottom-2 left-3 font-mono z-[60]">
+				<Link
+					className="underline"
+					href="https://github.com/ocbwoy3/ocbwoy3-bluesky-client"
+				>
+					OCbwoy3 Bluesky Client
+				</Link>
+				{` (${process.env.NODE_ENV}) `}
+				<span className="text-muted-foreground">{` | @atproto/api ${process
+					.env.atproto_api_version!} | next ${process.env
+					.next_version!}`}</span>
+				{/* {process.env.packagejson!} */}
+			</span>
 		</>
 	);
 }
