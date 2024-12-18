@@ -11,7 +11,9 @@ export function App() {
 	return (
 		<>
 			<WindowManager/>
-			<Title />
+			<div className="absolute w-screen top-4 select-none">
+				<Title />
+			</div>
 			<div className="absolute top-2 left-2 z-[70]">
 				<ProfileButton />
 			</div>
@@ -23,7 +25,7 @@ export function App() {
 					OCbwoy3 Bluesky Client
 				</Link>
 				{` (${process.env.NODE_ENV}) `}
-				<span className="text-muted-foreground">{` | @atproto/api ${process
+				<span className="text-ctp-surface2">{` @atproto/api ${process
 					.env.atproto_api_version!} | next ${process.env
 					.next_version!}`}</span>
 				{/* {process.env.packagejson!} */}

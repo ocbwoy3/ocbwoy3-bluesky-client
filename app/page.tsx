@@ -53,8 +53,8 @@ export default function Homepage() {
 						JSON.parse(localStorage.getItem("atproto-session")!)
 					);
 					if (d.data.active) {
-						toast("Maybe Success", {
-							description: `Called agent.resumeSession`,
+						toast("Success", {
+							description: `Restored existing ATProto session`,
 						});
 						setAgent(ag);
 						setShowLogin(false);
@@ -108,7 +108,7 @@ export default function Homepage() {
 							OCbwoy3 Bluesky Client
 						</Link>
 						{` (${process.env.NODE_ENV}) `}
-						<span className="text-muted-foreground">{`@atproto/api ${process
+						<span className="text-ctp-surface2">{`@atproto/api ${process
 							.env.atproto_api_version!} next ${process.env
 							.next_version!}`}</span>
 					</span>

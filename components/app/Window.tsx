@@ -140,24 +140,24 @@ export function Window({
 			}}
 		>
 			<CardHeader
-				className="cursor-move p-2 flex flex-row items-center justify-between bg-gray-900 select-none"
+				className="cursor-move p-2 flex flex-row items-center justify-between bg-ctp-mantle select-none"
 				onMouseDown={handleMouseDown}
 			>
-				<div className="text-sm font-medium text-white pointer-events-none">
+				<div className="text-sm font-medium text-ctp-text pointer-events-none">
 					{title}{process.env.NODE_ENV === "development" ? ` (${position.x} ${position.y} ${size.width}x${size.height})` : ""}
 				</div>
 				<div className="flex items-center">
 					{onClose && (
 						<button
 							onClick={onClose}
-							className="p-1 hover:bg-gray-700 rounded"
+							className="p-1 hover:bg-ctp-surface0 rounded"
 						>
-							<X className="h-4 w-4 text-white" />
+							<X className="h-4 w-4 text-ctp-blue" />
 						</button>
 					)}
 				</div>
 			</CardHeader>
-			<CardContent className="p-4 bg-gray-800 text-white h-[calc(100%-40px)] overflow-auto scrollbar-hide">
+			<CardContent className="p-4 bg-ctp-crust text-ctp-text h-[calc(100%-40px)] overflow-auto no-scrollbar">
 				{children}
 			</CardContent>
 			<div className="absolute top-0 left-0 w-full h-full pointer-events-none">
