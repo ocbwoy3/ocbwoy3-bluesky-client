@@ -15,6 +15,7 @@ import Link from "next/link";
 import { addWindow } from "./WM";
 import { LibraryList } from "./windows/LibraryList";
 import { PostDialog } from "./windows/PostDialog";
+import { GeminiAISettings } from "./windows/SetGeminiAPIKey";
 
 export function ProfileButton() {
 	const [params, setParams] = useState<{
@@ -98,6 +99,22 @@ export function ProfileButton() {
 					}}
 				>
 					Credits
+				</DropdownMenuItem>
+				<DropdownMenuItem
+					onClick={() => {
+						const id =
+							Date.now().toString() + Math.random().toString();
+						addWindow({
+							id: id,
+							title: "AI Settings",
+							content: <GeminiAISettings windowId={id} />,
+							position: { x: 100, y: 100 },
+							size: { width: 450, height: 400 },
+							minSize: { width: 450, height: 400 },
+						});
+					}}
+				>
+					AI Settings
 				</DropdownMenuItem>
 				<DropdownMenuItem
 					onClick={() => {

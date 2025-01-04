@@ -3,11 +3,12 @@
 import React, { useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Globe2, ImageIcon, X } from "lucide-react";
+import { Globe2, ImageIcon, WandIcon, X } from "lucide-react";
 import { closeWindow, updateWindow, WindowChildProps } from "../WM";
 import { getAgent } from "@/lib/atproto/client";
 import { toast } from "sonner";
 import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import { createGemini, GenerateSkeet } from "@/lib/gemini";
 
 interface PostDialogProps {
 	replyPost?: ReplyRef;
@@ -20,6 +21,8 @@ interface ImageWithAspectRatio {
 
 export function PostDialog(props: PostDialogProps & WindowChildProps) {
 	const [content, setContent] = useState<string>("");
+	const [isAIGenerating, setIsAIGenerating] = useState<boolean>(false);
+
 	const [blobs, setBlobs] = useState<ImageWithAspectRatio[]>([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const dropZoneRef = useRef<HTMLDivElement>(null);
@@ -167,6 +170,24 @@ export function PostDialog(props: PostDialogProps & WindowChildProps) {
 		setBlobs((prevBlobs) => prevBlobs.filter((_, i) => i !== index));
 	};
 
+	const generateAI = async (text: string) => {
+		if (!window.localStorage.gemini_api_key) return;
+		setIsAIGenerating(true);
+		console.log(text);
+		try {
+			const gemini = createGemini(window.localStorage.gemini_api_key);
+			const newSkeet = await GenerateSkeet(gemini, text);
+			setContent(newSkeet);
+			console.log(newSkeet);
+		} catch (e_) {
+			console.error(e_);
+			setContent(
+				"[ocbwoy3-bsky-client] Error AI generating skeet, check console!"
+			);
+		}
+		setIsAIGenerating(false);
+	};
+
 	return (
 		<div
 			className="space-y-4 p-4"
@@ -211,6 +232,17 @@ export function PostDialog(props: PostDialogProps & WindowChildProps) {
 								>
 									<ImageIcon className="w-4 h-4 mr-2" />
 									Add Image
+								</Button>
+								<Button
+									onClick={() => {
+										if (isAIGenerating) return;
+										generateAI(content);
+									}}
+									variant="outline"
+									disabled={blobs.length >= maxBlobs}
+								>
+									<WandIcon className="w-4 h-4 mr-2" />
+									AI
 								</Button>
 								<input
 									type="file"
