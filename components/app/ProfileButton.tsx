@@ -15,7 +15,7 @@ import Link from "next/link";
 import { addWindow } from "./WM";
 import { LibraryList } from "./windows/LibraryList";
 import { PostDialog } from "./windows/PostDialog";
-import { GeminiAISettings } from "./windows/SetGeminiAPIKey";
+import { GeminiAISettings } from "./windows/AISettings";
 
 export function ProfileButton() {
 	const [params, setParams] = useState<{

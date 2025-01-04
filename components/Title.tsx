@@ -9,11 +9,11 @@ export function Title() {
 					transform: "translate(100px,20px) rotate(-12deg)",
 				}}
 			>
-				{"rm -rf /*"}
+				{"bsky i think"}
 			</div>
-			<span className="text-4xl">OCbwoy3-SNS</span>
+			<span className="text-4xl">ocbwoy3.dev</span>
 			<br />
-			<span>{"let's go skeeting"}</span>
+			<span>{"it's time to skeet"}</span>
 		</div>
 	);
 }

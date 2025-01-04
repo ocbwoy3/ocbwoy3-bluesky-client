@@ -5,11 +5,14 @@ import Link from "next/link";
 import { ProfileButton } from "./app/ProfileButton";
 import { WindowManager } from "./app/WM";
 import { useState } from "react";
+import { FeedView } from "./app/feed/FeedView";
+import { getAgent } from "@/lib/atproto/client";
 
 export function App() {
 
 	return (
 		<>
+			{/* <FeedView posts={[]} feedUri="at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot"/> */}
 			<WindowManager/>
 			<div className="absolute w-screen top-4 select-none">
 				<Title />
@@ -27,7 +30,7 @@ export function App() {
 				{` (${process.env.NODE_ENV}) `}
 				<span className="text-ctp-surface2">{` @atproto/api ${process
 					.env.atproto_api_version!} | next ${process.env
-					.next_version!}`}</span>
+					.next_version!} - ${getAgent().pdsUrl}`}</span>
 				{/* {process.env.packagejson!} */}
 			</span>
 		</>

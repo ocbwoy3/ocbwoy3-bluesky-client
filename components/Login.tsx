@@ -122,7 +122,7 @@ export default function LoginForm() {
 			<CardFooter>
 				<span className="text-sm text-yellow-300">
 					{
-						"Your login details will be stored in the browser's LocalStorage."
+						"Your login details and API keys will be stored in the browser's LocalStorage."
 					}
 				</span>
 			</CardFooter>

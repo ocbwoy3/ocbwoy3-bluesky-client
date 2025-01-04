@@ -2,12 +2,61 @@ import React, { useEffect, useState } from "react";
 import { updateWindow, WindowChildProps } from "../WM";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SystemPrompts } from "@/lib/gemini";
-import { SelectItem } from "@radix-ui/react-select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import {
+	getCurrentSystemPromptId,
+	setCurrentSystemPrompt,
+	SystemPrompt,
+	SystemPromptsAISkeet,
+	SystemPromptType,
+} from "@/lib/gemini/prompts";
+
+function AISettings({
+	windowId,
+	title,
+	type,
+	values,
+}: {
+	windowId: string;
+	title: string;
+	type: SystemPromptType;
+	values: SystemPrompt[];
+}) {
+	const [promptId, setPromptId] = useState<string>(
+		getCurrentSystemPromptId(type)
+	);
+
+	return (
+		<div>
+			<p className="text-sm text-ctp-blue">{title}</p>
+			<RadioGroup
+				className="pt-2"
+				defaultValue={promptId}
+				onValueChange={(v) => {
+					setCurrentSystemPrompt(type, v);
+				}}
+			>
+				{values.map((prompt) => (
+					<div
+						key={prompt.id}
+						className="flex items-center space-x-2"
+					>
+						<RadioGroupItem
+							value={prompt.id}
+							id={`w${windowId}-systemPromptSelector-${type}-${prompt.id}`}
+						/>
+						<Label
+							htmlFor={`w${windowId}-systemPromptSelector-${prompt.id}`}
+						>
+							{prompt.name}
+						</Label>
+					</div>
+				))}
+			</RadioGroup>
+		</div>
+	);
+}
 
 export function GeminiAISettings(props: WindowChildProps) {
 	let deps = JSON.parse(process.env.packagejson!).dependencies! as {
@@ -42,7 +91,7 @@ export function GeminiAISettings(props: WindowChildProps) {
 					{"meet these requirements"}
 				</Link>
 				{"."}
-				<br/>
+				<br />
 			</div>
 			<div className="block space-y-4">
 				<div>
@@ -53,25 +102,23 @@ export function GeminiAISettings(props: WindowChildProps) {
 						aria-label="Gemini API key"
 						onChange={(a) => {
 							setApiKey(a.target.value);
-							window.localStorage.gemini_api_key = a;
+							window.localStorage.gemini_api_key = a.target.value;
 						}}
 						placeholder="API Key"
 					></Input>
 				</div>
-				<div>
-					<p className="text-sm text-ctp-blue">Skeet Composer Prompt</p>
-					<RadioGroup className="pt-2" defaultValue={skeetPromptId} onValueChange={(v) => {
-						setSkeetPromptId(v);
-						window.localStorage.skeet_system_prompt = v;
-					}}>
-						{SystemPrompts.map((prompt) => (
-							<div key={prompt.id} className="flex items-center space-x-2">
-								<RadioGroupItem value={prompt.id} id={`w${props.windowId}-syspr-${prompt.id}`}/>
-								<Label htmlFor={`w${props.windowId}-syspr-${prompt.id}`}>{prompt.name}</Label>
-							</div>
-						))}
-					</RadioGroup>
-				</div>
+				<AISettings
+					windowId={props.windowId}
+					title="Post Composer Prompt"
+					type="PostComposer"
+					values={SystemPromptsAISkeet}
+				/>
+				<AISettings
+					windowId={props.windowId}
+					title="AI Summary Prompt"
+					type="AISummary"
+					values={SystemPromptsAISkeet}
+				/>
 			</div>
 		</div>
 	);

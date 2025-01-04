@@ -6,7 +6,9 @@ export type SystemPrompt = {
 
 import NyawasticLangPrompt from "./system_prompts/nyawastic_lang";
 
-export const SystemPrompts: SystemPrompt[] = [
+export type SystemPromptType = "PostComposer" | "AISummary";
+
+export const SystemPromptsAISkeet: SystemPrompt[] = [
 	{
 		name: "Default",
 		id: "default",
@@ -19,15 +21,47 @@ export const SystemPrompts: SystemPrompt[] = [
 	},
 ];
 
-export function getCurrentSystemPrompt(): string {
-	if (!global.localStorage.skeet_system_prompt) {
-		global.localStorage.skeet_system_prompt = "default";
+export const SystemPromptsAISummary: SystemPrompt[] = [
+	{
+		name: "Default",
+		id: "default",
+		prompt: "",
+	},
+	{
+		name: "Nyawastic lang",
+		id: "nyaw",
+		prompt: NyawasticLangPrompt,
+	},
+];
+
+
+export function getCurrentSystemPrompt(
+	from: SystemPromptType
+): string {
+	if (!global.localStorage[`aisetting_${from}`]) {
+		global.localStorage[`aisetting_${from}`] = "default";
 	}
-	const prompt = SystemPrompts.find(
-		(p) => p.id === global.localStorage.skeet_system_prompt
+	const prompt = SystemPromptsAISkeet.find(
+		(p) => p.id === global.localStorage[`aisetting_${from}`]
 	);
 	if (!prompt) {
 		return "";
 	}
 	return prompt.prompt;
+}
+
+export function getCurrentSystemPromptId(
+	from: SystemPromptType
+): string {
+	if (!global.localStorage[`aisetting_${from}`]) {
+		global.localStorage[`aisetting_${from}`] = "default";
+	}
+	return global.localStorage[`aisetting_${from}`];
+}
+
+export function setCurrentSystemPrompt(
+	from: SystemPromptType,
+	id: string
+) {
+	global.localStorage[`aisetting_${from}`] = id;
 }

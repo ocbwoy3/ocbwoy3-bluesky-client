@@ -33,6 +33,8 @@ export function PostDialog(props: PostDialogProps & WindowChildProps) {
 
 	const [isSending, setIsSending] = useState<boolean>(false);
 	const [isDragging, setIsDragging] = useState<boolean>(false);
+	const [isAIGenerated, setIsAIGenerated] = useState<boolean>(false);
+	
 
 	React.useEffect(() => {
 		if (props.replyPost) updateWindow(props.windowId, { title: "Reply" });
@@ -65,6 +67,7 @@ export function PostDialog(props: PostDialogProps & WindowChildProps) {
 				text: content,
 				reply: props.replyPost,
 				posting_client: "OCbwoy3-SNS",
+				ai_generated: isAIGenerated,
 				embed:
 					blobs.length > 0
 						? {
@@ -177,6 +180,7 @@ export function PostDialog(props: PostDialogProps & WindowChildProps) {
 		try {
 			const gemini = createGemini(window.localStorage.gemini_api_key);
 			const newSkeet = await GenerateSkeet(gemini, text);
+			setIsAIGenerated(true);
 			setContent(newSkeet);
 			console.log(newSkeet);
 		} catch (e_) {

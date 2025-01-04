@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "OCbwoy3-SNS",
-	description: "Bluesky Client for Skeeting",
+	title: "OCbwoy3 Bluesky Client",
+	description: "test bsky client, wip",
 };
 
 export default function RootLayout({
