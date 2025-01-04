@@ -60,7 +60,7 @@ export function ProfileButton() {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				side="top"
-				className="w-[--radix-popper-anchor-width]"
+				className="w-[--radix-popper-anchor-width] font-sans"
 			>
 				<DropdownMenuItem
 					onClick={() => {

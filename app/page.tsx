@@ -100,7 +100,7 @@ export default function Homepage() {
 					<div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center z-50">
 						<LoginForm />
 					</div>
-					<span className="absolute bottom-2 left-3 font-mono z-[60]">
+					<span className="absolute bottom-2 left-3 font-mono z-[60] select-none">
 						<Link
 							className="underline"
 							href="https://github.com/ocbwoy3/ocbwoy3-bluesky-client"
@@ -119,7 +119,7 @@ export default function Homepage() {
 			{showApp ? (
 				<>
 					{/* <CommandMenu /> */}
-					<div className="absolute top-0 left-0 w-screen h-screen overflow-hidden">
+					<div className="absolute top-0 left-0 w-screen h-screen overflow-hidden select-none">
 						<App />
 					</div>
 				</>

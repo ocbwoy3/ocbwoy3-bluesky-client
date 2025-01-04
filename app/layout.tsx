@@ -30,8 +30,10 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased dark bg-ctp-mantle text-ctp-text`}
 			>
-				{children}
-				<Toaster/>
+				<main className="font-sans selection:bg-ctp-red selection:bg-opacity-50">
+					{children}
+					<Toaster/>
+				</main>
 			</body>
 		</html>
 	);

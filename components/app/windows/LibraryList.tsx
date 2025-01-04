@@ -48,6 +48,12 @@ export function LibraryList(props: WindowChildProps) {
 						</span>
 					</div>
 					<div>
+						{"Google Generative AI"}{" "}
+						<span className="text-ctp-subtext0">
+							{process.env.google_genai_version!.replace("^", "")}
+						</span>
+					</div>
+					<div>
 						{"TailwindCSS"}{" "}
 						<span className="text-ctp-subtext0">
 							{process.env.tailwind_version!.replace("^", "")}
