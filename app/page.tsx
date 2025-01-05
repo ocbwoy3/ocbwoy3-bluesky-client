@@ -108,7 +108,7 @@ export default function Homepage() {
 							OCbwoy3 Bluesky Client
 						</Link>
 						{` (${process.env.NODE_ENV}) `}
-						<span className="text-ctp-surface2">{`@atproto/api ${process
+						<span className="text-ctp-surface2 text-sm">{`@atproto/api ${process
 							.env.atproto_api_version!} next ${process.env
 							.next_version!}`}</span>
 					</span>

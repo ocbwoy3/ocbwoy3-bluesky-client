@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { updateWindow, WindowChildProps } from "../WM";
 import { Title } from "@/components/Title";
 import { platform } from "os";
+import { getAgent } from "@/lib/atproto/client";
+import Link from "next/link";
 
 export function LibraryList(props: WindowChildProps) {
 	let deps = JSON.parse(process.env.packagejson!).dependencies! as {
@@ -20,7 +22,7 @@ export function LibraryList(props: WindowChildProps) {
 			<div className="block">
 				<Title />
 				{
-					"This is a Bluesky Client built by me to test my coding skills making it :3"
+					"Also known as OCbwoy3-SNS, this is a work-in-progress window-based Bluesky Client partially inspired by Misskey."
 				}
 				<div className="text-center font-bold text-sm text-ctp-blue">
 					<div className="w-2 h-2" />
@@ -31,31 +33,31 @@ export function LibraryList(props: WindowChildProps) {
 				<span className="text-sm">
 					<div>
 						{"ATProto"}{" "}
-						<span className="text-ctp-subtext0">
+						<span className="text-ctp-subtext0 font-mono">
 							{process.env.atproto_api_version!.replace("^", "")}
 						</span>
 					</div>
 					<div>
 						{"Next.js"}{" "}
-						<span className="text-ctp-subtext0">
+						<span className="text-ctp-subtext0 font-mono">
 							{process.env.next_version!.replace("^", "")}
 						</span>
 					</div>
 					<div>
 						{"React"}{" "}
-						<span className="text-ctp-subtext0">
+						<span className="text-ctp-subtext0 font-mono">
 							{process.env.react_version!.replace("^", "")}
 						</span>
 					</div>
 					<div>
 						{"Google Generative AI"}{" "}
-						<span className="text-ctp-subtext0">
+						<span className="text-ctp-subtext0 font-mono">
 							{process.env.google_genai_version!.replace("^", "")}
 						</span>
 					</div>
 					<div>
 						{"TailwindCSS"}{" "}
-						<span className="text-ctp-subtext0">
+						<span className="text-ctp-subtext0 font-mono">
 							{process.env.tailwind_version!.replace("^", "")}
 						</span>
 					</div>
@@ -63,14 +65,14 @@ export function LibraryList(props: WindowChildProps) {
 				</span>
 			</div>
 			<div className="text-center font-bold text-sm text-ctp-subtext0">
-				{"The package.json dependencies"}
+				{"package.json"}
 			</div>
 			<div className="block">
 				<div className="font-bold text-lg text-ctp-blue">
 					Dependencies
 				</div>
 				{Object.entries(deps).map((a: [string, string]) => (
-					<div key={a[0]}>
+					<div key={a[0]} className="font-mono">
 						{a[0]} <span className="text-ctp-subtext0">{a[1]}</span>
 					</div>
 				))}
@@ -84,7 +86,7 @@ export function LibraryList(props: WindowChildProps) {
 				))}
 			</div>
 			<div className="font-bold text-sm text-ctp-blue">{"Debug"}</div>
-			<span className="text-sm">
+			<span className="text-sm font-mono">
 				<div>
 					{"platform"}{" "}
 					<span className="text-ctp-subtext0">
@@ -103,6 +105,22 @@ export function LibraryList(props: WindowChildProps) {
 						{process.env.NODE_ENV}
 					</span>
 				</div>
+				<div>
+					{"PDS"}{" "}
+					<span className="text-ctp-subtext0">
+						{getAgent().pdsUrl?.toString().replace(/^https\:\/\/|\/$/g,"")}
+					</span>
+				</div>
+				<div>
+					{"DID"}{" "}
+					<span className="text-ctp-subtext0">
+						{getAgent().did}
+					</span>
+				</div>
+			</span>
+			<span className="text-sm font-mono space-x-2">
+				<Link href={"https://atproto.com"} className="text-ctp-blue decoration-ctp-blue underline">AT Protocol</Link>
+				<Link href={"https://bsky.social"} className="text-ctp-blue decoration-ctp-blue underline">Bluesky</Link>
 			</span>
 		</div>
 	);

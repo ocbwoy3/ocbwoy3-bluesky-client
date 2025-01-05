@@ -82,7 +82,7 @@ export function Post({ post: { post } }: PostProps) {
 							{post.author.displayName || post.author.handle}
 						</span>
 						<span className="text-muted-foreground">
-							@{post.author.handle.replace(/\.bsky\.social^/,"")}
+							@{post.author.handle.replace(/\.bsky\.social$/,"")}
 						</span>
 					</div>
 					<div className="text-sm">{(post.record as any).text || <span className="text-ctp-red">{"[OCbwoy3-SNS] post has no text record"}</span>}</div>

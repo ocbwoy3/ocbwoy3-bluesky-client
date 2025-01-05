@@ -19,7 +19,7 @@ export async function fetchPosts({ feedUri, cursor }: { feedUri: string, cursor?
 	}
 	const feed = await agent.app.bsky.feed.getFeed({
 		feed: feedUri,
-		limit: 10,
+		limit: 50,
 		cursor: cursor
 	})
 	return {
