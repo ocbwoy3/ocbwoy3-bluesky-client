@@ -1,18 +1,17 @@
 "use client";
 
-import { Title } from "./Title";
+import { getAgent } from "@/lib/atproto/client";
 import Link from "next/link";
+import { FeedView } from "./app/feed/FeedView";
 import { ProfileButton } from "./app/ProfileButton";
 import { WindowManager } from "./app/WM";
-import { useState } from "react";
-import { FeedView } from "./app/feed/FeedView";
-import { getAgent } from "@/lib/atproto/client";
+import { Title } from "./Title";
 
 export function App() {
 
 	return (
 		<>
-			<FeedView posts={[]} feedUri="at://did:plc:s7cesz7cr6ybltaryy4meb6y/app.bsky.feed.generator/aaadm4a3emqvk"/>
+			<FeedView feedUri="at://did:plc:s7cesz7cr6ybltaryy4meb6y"/>
 			<WindowManager/>
 			<div className="absolute w-screen top-4 select-none">
 				<Title />
@@ -28,7 +27,7 @@ export function App() {
 					OCbwoy3 Bluesky Client
 				</Link>
 				{` (${process.env.NODE_ENV}) `}
-				<span className="text-ctp-surface2 text-sm">{` @atproto/api ${process
+				<span className="text-ctp-surface2 text-xs">{` @atproto/api ${process
 					.env.atproto_api_version!} | next ${process.env
 					.next_version!} - ${getAgent().pdsUrl} ${getAgent().did}`}</span>
 				{/* {process.env.packagejson!} */}

@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Globe2, ImageIcon, WandIcon, X } from "lucide-react";
-import { closeWindow, updateWindow, WindowChildProps } from "../WM";
 import { getAgent } from "@/lib/atproto/client";
-import { toast } from "sonner";
-import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
 import { createGemini, GenerateSkeet } from "@/lib/gemini";
+import { ReplyRef } from "@atproto/api/dist/client/types/app/bsky/feed/post";
+import { ImageIcon, WandIcon, X } from "lucide-react";
+import React, { useCallback, useRef, useState } from "react";
+import { toast } from "sonner";
+import { closeWindow, updateWindow, WindowChildProps } from "../WM";
 
 interface PostDialogProps {
 	replyPost?: ReplyRef;
@@ -66,7 +66,7 @@ export function PostDialog(props: PostDialogProps & WindowChildProps) {
 			await agent.post({
 				text: content,
 				reply: props.replyPost,
-				posting_client: "OCbwoy3-SNS",
+				posting_client: "ocbwoy3.dev",
 				ai_generated: isAIGenerated,
 				embed:
 					blobs.length > 0

@@ -1,79 +1,84 @@
-import React from "react";
+import { fetchPosts } from "@/lib/atproto/client";
 import { AppBskyFeedDefs } from "@atproto/api";
-import { Post } from "./Post";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Post } from "./Post";
 
 interface FeedViewProps {
-	posts: AppBskyFeedDefs.FeedViewPost[];
-	feedUri: string /* at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot */;
+	feedUri: string;
 }
 
-import { useState, useEffect } from "react";
-import { fetchPosts } from "../../../lib/atproto/client"; // Assume this function fetches more posts
-
-export function FeedView({ posts: initialPosts = [], feedUri }: FeedViewProps) {
-	const [posts, setPosts] = useState(initialPosts);
-	const [loading, setLoading] = useState(false);
-	const [hasMore, setHasMore] = useState(true);
+export function FeedView({ feedUri }: FeedViewProps) {
+	const [posts, setPosts] = useState<AppBskyFeedDefs.FeedViewPost[]>([]);
 	const [cursor, setCursor] = useState<string | undefined>();
+	const [hasMore, setHasMore] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
-	const fetchMoreData = async () => {
-		setLoading(true);
-		(async () => {
-			console.log("loading lol");
-			if (posts.length >= 500) {
-				setHasMore(false);
-				return;
-			}
+	const loadMore = async () => {
+		if (isLoading) return;
+
+		setIsLoading(true);
+		try {
 			const newPosts = await fetchPosts({
-				feedUri: feedUri,
-				cursor: cursor,
+				feedUri,
+				cursor,
 			});
-			setCursor(newPosts.newCursor);
-			setHasMore(newPosts.newCursor ? true : false);
-			setLoading(false);
-			const existingUris = new Set(posts.map((post) => post.post.uri));
-			const filteredNewPosts = newPosts.feed.filter(
-				(post) => !existingUris.has(post.post.uri)
-			);
-			setPosts([...posts, ...filteredNewPosts]);
-		})();
+
+			if (newPosts && newPosts.feed.length > 0) {
+				setPosts((prevPosts) => {
+					return [...prevPosts, ...(newPosts.feed.filter(a=>{
+						return prevPosts.find(b=>b.post.uri === a.post.uri) ? false : true
+					}))];
+				});
+				setCursor(newPosts.newCursor); // Update with new cursor from response if available
+			} else {
+				setHasMore(false); // Stop loading if no more posts are returned
+			}
+		} catch (error) {
+			console.error("Error fetching posts:", error);
+			setHasMore(false); // Stop on error to prevent infinite loop
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useEffect(() => {
-		fetchMoreData();
+		// Reset state when feedUri changes to avoid stale data being rendered at the beginning
+		setPosts([]);
+		setCursor(undefined);
+		setHasMore(true);
+		loadMore();
 	}, [feedUri]);
 
 	return (
-		<>
-			{process.env.NODE_ENV === "development" ? (
-				<span className="z-[100] bg-ctp-crust bg-transparent text-sm font-mono fixed bottom-4 right-8 p-2 rounded-lg text-ctp-red break-all">
-					<span className="font-bold text-lg">{"feed debug"}</span>
-					<br />
-					{"posts: "}
-					{posts.length}
-					<br />
-					{"loading: "}
-					{loading ? "true" : "false"}
-					<br />
-					{"hasMore: "}
-					{hasMore ? "true" : "false"}
-				</span>
-			) : (
-				""
-			)}
+		<div className="w-full max-w-2xl mx-auto max-h-screen overflow-y-scroll no-scrollbar">
 			<InfiniteScroll
-				className="space-y-4 h-screen max-h-screen"
 				dataLength={posts.length}
-				next={fetchMoreData}
+				next={loadMore}
 				hasMore={hasMore}
-				loader={"Loading more posts..."}
-				endMessage={"You've seen it all!"}
+				loader={
+					<h4 className="text-center py-4">Loading more posts...</h4>
+				}
+				endMessage={
+					<p className="text-center py-4">
+						<b>You have reached the end.</b>
+					</p>
+				}
+				// Add a refresh function if needed
+				// refreshFunction={refresh}
+				// pullDownToRefresh
+				// pullDownToRefreshThreshold={50}
+				// pullDownToRefreshContent={
+				//     <h3 style={{ textAlign: 'center' }}>↓ Pull down to refresh</h3>
+				// }
+				// releaseToRefreshContent={
+				//     <h3 style={{ textAlign: 'center' }}>↑ Release to refresh</h3>
+				// }
 			>
-				{posts.map((post) => (
-					<Post key={post.post.uri} post={post} />
+				{posts.map((post, index) => (
+					<Post key={post.post.uri || index} post={post} />
 				))}
 			</InfiniteScroll>
-		</>
+		</div>
 	);
 }

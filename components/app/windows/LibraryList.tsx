@@ -4,6 +4,7 @@ import { Title } from "@/components/Title";
 import { platform } from "os";
 import { getAgent } from "@/lib/atproto/client";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 export function LibraryList(props: WindowChildProps) {
 	let deps = JSON.parse(process.env.packagejson!).dependencies! as {
@@ -22,7 +23,7 @@ export function LibraryList(props: WindowChildProps) {
 			<div className="block">
 				<Title />
 				{
-					"Also known as OCbwoy3-SNS, this is a work-in-progress window-based Bluesky Client partially inspired by Misskey."
+					"Also known as OCbwoy3-SNS, this is a work-in-progress third-party Bluesky client. Just like every Bluesky client app, it utilizes the AT Protocol."
 				}
 				<div className="text-center font-bold text-sm text-ctp-blue">
 					<div className="w-2 h-2" />
@@ -80,7 +81,7 @@ export function LibraryList(props: WindowChildProps) {
 					Dev Dependencies
 				</div>
 				{Object.entries(devDeps).map((a: [string, string]) => (
-					<div key={a[0]}>
+					<div key={a[0]} className="font-mono">
 						{a[0]} <span className="text-ctp-subtext0">{a[1]}</span>
 					</div>
 				))}
@@ -108,19 +109,23 @@ export function LibraryList(props: WindowChildProps) {
 				<div>
 					{"PDS"}{" "}
 					<span className="text-ctp-subtext0">
-						{getAgent().pdsUrl?.toString().replace(/^https\:\/\/|\/$/g,"")}
+						{getAgent()
+							.pdsUrl?.toString()
+							.replace(/^https\:\/\/|\/$/g, "")}
 					</span>
 				</div>
 				<div>
 					{"DID"}{" "}
-					<span className="text-ctp-subtext0">
-						{getAgent().did}
-					</span>
+					<span className="text-ctp-subtext0">{getAgent().did}</span>
 				</div>
 			</span>
 			<span className="text-sm font-mono space-x-2">
-				<Link href={"https://atproto.com"} className="text-ctp-blue decoration-ctp-blue underline">AT Protocol</Link>
-				<Link href={"https://bsky.social"} className="text-ctp-blue decoration-ctp-blue underline">Bluesky</Link>
+				<Link href={"https://atproto.com"}>
+					<Badge variant="outline">AT Protocol</Badge>
+				</Link>
+				<Link href={"https://bsky.social"}>
+					<Badge variant="outline">Bluesky</Badge>
+				</Link>
 			</span>
 		</div>
 	);

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@atcute/bluesky-richtext-segmenter": "^1.0.5",
     "@atproto/api": "^0.13.20",
     "@atproto/identity": "^0.4.3",
     "@google/generative-ai": "^0.21.0",

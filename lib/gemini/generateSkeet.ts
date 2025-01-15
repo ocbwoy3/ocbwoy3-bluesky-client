@@ -20,7 +20,7 @@ export async function GenerateSkeet(
 			"Only return the raw post text of a single post ONLY.",
 			"No more than 300 chars.",
 			"No hashtags nor emojis."
-		].join("\n")+getCurrentSystemPrompt(),
+		].join("\n")+getCurrentSystemPrompt("PostComposer"),
 	});
 
 	const generationConfig = {
